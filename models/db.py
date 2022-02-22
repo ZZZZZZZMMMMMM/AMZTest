@@ -22,7 +22,7 @@ if not request.env.web2py_runtime_gae:
              pool_size=myconf.get('db.pool_size'),
              migrate_enabled=myconf.get('db.migrate'),
              check_reserved=['all'])
-    # I like to keep the session in the db.
+    # keep the session in the db.
     session.connect(request, response, db=db)
 else:
     # connect to Google BigTable (optional 'google:datastore://namespace')
@@ -43,14 +43,7 @@ response.generic_patterns = ['*'] if request.is_local else []
 response.formstyle = myconf.get('forms.formstyle')  # or 'bootstrap3_stacked' or 'bootstrap2' or other
 response.form_label_separator = myconf.get('forms.separator') or ''
 
-# (optional) optimize handling of static files
-# response.optimize_css = 'concat,minify,inline'
-# response.optimize_js = 'concat,minify,inline'
-
-# (optional) static assets folder versioning
-# response.static_version = '0.0.0'
-
-# Here is sample code if you need for
+# Here is sample code
 # - email capabilities
 # - authentication (registration, login, logout, ... )
 # - authorization (role based authorization)
@@ -95,5 +88,5 @@ logging.basicConfig(stream=sys.stderr)
 logger = logging.getLogger(request.application)
 logger.setLevel(logging.INFO)
 
-# Let's log the request.
+# log the request.
 logger.info("====> Request: %r %r %r %r" % (request.env.request_method, request.env.path_info, request.args, request.vars))

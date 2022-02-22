@@ -1,5 +1,6 @@
 header a {color: white; font-size:1.1em}
-main {min-height: 70vh}
+main {min-height: 70vh;
+padding: 16px;}
 table {color: black}
 .form-group {padding-bottom: 10px !important;}
 .w2p_hidden {display:none;visibility:visible}

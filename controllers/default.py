@@ -7,20 +7,29 @@
 # - user is required for authentication and authorization
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
-
+import os
 
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
+    return dict()
 
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
-    """
-    response.flash = T("Hello World")
-    return dict(message=T('Welcome to web2py!'))
+	
+def upload():
 
+	form = SQLFORM(db.audio_info,deletable=True,fields=['audio_file'])
+	if request.vars.audio_file!=None:
+		form.vars.audio_title=request.vars.audio_file.filename
+	if form.process().accepted:
+		redirect(URL('default', 'index'))
+		print "accept"
+		 
+	elif form.errors:
+		response.flash = 'form has errors'
+	else:
+		response.flash = 'please fill out the form'
+		
+	return dict(form=form)
 
+	
 def user():
     """
     exposes:
@@ -39,7 +48,7 @@ def user():
     """
     return dict(form=auth())
 
-
+	
 @cache.action()
 def download():
     """
@@ -48,7 +57,7 @@ def download():
     """
     return response.download(request, db)
 
-
+	
 def call():
     """
     exposes services. for example:
@@ -57,5 +66,12 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
+
+	
+def audio_download():
+	father_path=os.path.abspath(os.path.dirname(__file__)+os.path.sep+"..")
+	filepath=father_path+'/audio/temp/'+request.args[0]
+	print filepath
+	return response.stream(filepath)
 
 
